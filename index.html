@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Chile Trip Plans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --ivory: #f8f3ec; --paper: #fffdf9; --line: #e2d5c7;
+    --ink: #2b1a20; --ink-soft: #5e4a50;
+    --primary: #5d6b45; --primary-dark: #46522f;
+    --accent: #6b1a2b; --accent-tint: #f4e4e4;
+    --display: "Cormorant Garamond", "Times New Roman", serif;
+    --body: "Lora", Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px 16px;
+    font: 400 17px/1.6 var(--body); color: var(--ink);
+    background:
+      repeating-linear-gradient(90deg, transparent 0 22px, rgba(93,107,69,.07) 22px 44px),
+      var(--ivory);
+  }
+  .card {
+    width: 100%; max-width: 420px; padding: 40px 32px 32px; text-align: center;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(43,26,32,.06);
+  }
+  .eyebrow { margin: 0 0 8px; font: 500 12px/1 var(--body); letter-spacing: .22em; text-transform: uppercase; color: var(--accent); }
+  h1 { margin: 0; font: 600 clamp(38px, 9vw, 48px)/1.05 var(--display); color: var(--primary); }
+  .flourish { margin: 14px 0 18px; color: var(--accent); }
+  .intro { margin: 0 0 22px; color: var(--ink-soft); font-size: 15px; }
+  form { display: grid; gap: 14px; text-align: left; }
+  label.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  input[type=password] {
+    width: 100%; padding: 13px 14px; font: 400 16px/1.2 var(--body); color: var(--ink);
+    background: var(--ivory); border: 1px solid var(--line); border-radius: 8px;
+  }
+  input[type=password]:focus { outline: 2px solid var(--primary); outline-offset: 1px; border-color: transparent; }
+  .remember { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-soft); }
+  .remember input { width: 16px; height: 16px; accent-color: var(--primary); }
+  button {
+    padding: 13px 20px; font: 500 16px/1.2 var(--body); color: var(--paper);
+    background: var(--primary); border: 0; border-radius: 8px; cursor: pointer;
+  }
+  button:hover { background: var(--primary-dark); }
+  button:disabled { opacity: .6; cursor: wait; }
+  .status { min-height: 1.5em; margin: 2px 0 0; font-size: 14px; text-align: center; color: var(--ink-soft); }
+  .status.err { color: #9b2226; }
+  .opening form, .opening .intro { display: none; }
+</style>
+</head>
+<body>
+<main class="card" id="card">
+  <p class="eyebrow">You're invited</p>
+  <h1>Chile Trip Plans</h1>
+  <div class="flourish" aria-hidden="true">❦</div>
+  <p class="intro">Enter the password we shared with you.</p>
+  <form id="form" autocomplete="on">
+    <label class="sr" for="pw">Password</label>
+    <input id="pw" type="password" name="password" autocomplete="current-password" placeholder="Password" required autofocus>
+    <label class="remember"><input id="remember" type="checkbox" checked> Remember me on this device for 30 days</label>
+    <button id="go" type="submit">Open</button>
+  </form>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+  <noscript><p class="status err">Please turn on JavaScript to open this page.</p></noscript>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  // Written by build.mjs: { salt, iterations, slots: [{ iv, data }], storageKey, rememberDays }
+  const LOCK = {"salt":"MK2YWAX8RIvwAv/TJ965tQ==","iterations":600000,"slots":[{"iv":"8piY64PQP6rHwQ7w","data":"10b/yHYsWXkLDue2qzIR1HYB/4zv3D6Sqi5HAfQmY5+m45Y9/jNwAhJKBdHz64l9eHZ4kY3K1yW9hoCLUG5K32QvQot+0nYjOLhhLky7gzqfKPSBXIKCHb7XBHXFfxR3khL3Udiea/0="},{"iv":"Hq49X6QIJnlWH3Ga","data":"GG3pHupg6UyEi2hyf2ge90S6jP8ac1LRWQCKijBlr6aLSIpTDXn3JKdf+1Qa4UepbZmuNXDLOOS/tNSC/OjwD7CCJLDcG9SaWfeiXubd+T7AHpr7jC2a/OTsGum8TeA1Ra1rGkCPlBA="},{"iv":"zN9krC9GmK0+Ft++","data":"VQ0TuDFsjmrOWTvKA5aA/sMlkDbSBoLAXkcgNFGr2vAFshQYE9UcHbU9m4EEZDwgledf472WkLd80TTQlRj8OkO9F6pJBUjHI+yuzWv+vAAT8n4RaIfuYC48OSZ6RE8hvsOuqu7rbDk="},{"iv":"d0cfW6Et5IV/xxgR","data":"1EolLFm/2//jfGCKpZDM14e5NC3o36H1fjkf3k97WGQC9es+ORgVr/4YJ4rnlA37GufT9IAiXP3TzVFarPi9tKfdOGXKX6/0sCN5XJa3eG3pPFNdZluJWZsr+OMHeY11SHlrWQ5U9XY="}],"storageKey":"chile-trip-plans:unlock","rememberDays":30};
+
+  const $ = id => document.getElementById(id);
+  const utf8 = s => new TextEncoder().encode(s);
+  const text = b => new TextDecoder().decode(b);
+  const bytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  // Must match norm() in build.mjs: ignore capitals and surrounding spaces
+  const norm = p => p.normalize("NFC").trim().toLowerCase();
+
+  function status(msg, isError) {
+    $("status").textContent = msg;
+    $("status").className = "status" + (isError ? " err" : "");
+  }
+
+  // Remembered access = { file, key } (never the password).
+  // sessionStorage: this tab only. localStorage: "remember me", with an expiry.
+  const saved = {
+    get() {
+      for (const name of ["sessionStorage", "localStorage"]) {
+        try {
+          const v = JSON.parse(window[name].getItem(LOCK.storageKey));
+          if (v && v.file && v.key && (!v.exp || v.exp > Date.now())) return v;
+        } catch { /* unavailable or corrupt: ignore */ }
+      }
+      return null;
+    },
+    set(access, remember) {
+      const v = JSON.stringify({ file: access.file, key: access.key });
+      try { sessionStorage.setItem(LOCK.storageKey, v); } catch { /* ignore */ }
+      if (remember) {
+        const exp = Date.now() + LOCK.rememberDays * 864e5;
+        try { localStorage.setItem(LOCK.storageKey, JSON.stringify({ file: access.file, key: access.key, exp })); } catch { /* ignore */ }
+      }
+    },
+    clear() {
+      for (const name of ["sessionStorage", "localStorage"]) {
+        try { window[name].removeItem(LOCK.storageKey); } catch { /* ignore */ }
+      }
+    },
+  };
+
+  // Password -> { file, key } for that group's view, or null if no slot opens
+  async function unlock(password) {
+    const base = await crypto.subtle.importKey("raw", utf8(norm(password)), "PBKDF2", false, ["deriveKey"]);
+    const passwordKey = await crypto.subtle.deriveKey(
+      { name: "PBKDF2", hash: "SHA-256", salt: bytes(LOCK.salt), iterations: LOCK.iterations },
+      base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    for (const slot of LOCK.slots) {
+      try {
+        const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes(slot.iv) }, passwordKey, bytes(slot.data));
+        return JSON.parse(text(plain));
+      } catch { /* not this group's slot */ }
+    }
+    return null;
+  }
+
+  // Download that group's encrypted page, decrypt it, and show it in place of this one
+  async function openView(access) {
+    if (!/^[0-9a-f]{24}$/.test(access.file)) throw new Error("Bad file name");
+    const res = await fetch("c/" + access.file + ".bin", { cache: "no-cache" });
+    if (!res.ok) throw new Error("Download failed: " + res.status);
+    const buf = new Uint8Array(await res.arrayBuffer());          // [12-byte iv][ciphertext+tag]
+    const key = await crypto.subtle.importKey("raw", bytes(access.key), "AES-GCM", false, ["decrypt"]);
+    const html = text(await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.subarray(0, 12) }, key, buf.subarray(12)));
+    document.open();
+    document.write(html);
+    document.close();
+  }
+
+  const nextFrame = () => new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
+
+  $("form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const pw = $("pw").value;
+    if (!norm(pw)) { status("Please type the password.", true); return; }
+    $("go").disabled = true;
+    status("Unlocking…");
+    await nextFrame();   // let "Unlocking…" appear before the slow step
+    try {
+      const access = await unlock(pw);
+      if (!access) {
+        status("That password didn't work. Please check it and try again.", true);
+        $("pw").select();
+        return;
+      }
+      saved.set(access, $("remember").checked);
+      status("Opening…");
+      await openView(access);
+    } catch (err) {
+      console.error(err);
+      status("Something went wrong opening the page. Please check your connection and try again.", true);
+    } finally {
+      if (document.getElementById("go")) $("go").disabled = false;
+    }
+  });
+
+  if (!window.crypto || !crypto.subtle) {
+    $("go").disabled = true;
+    status("This browser can't open the page. Please try an up-to-date browser.", true);
+    return;
+  }
+
+  // Already unlocked on this device? Open straight away.
+  const access = saved.get();
+  if (access) {
+    $("card").classList.add("opening");
+    status("Opening your plans…");
+    openView(access).catch(err => {
+      console.error(err);
+      saved.clear();          // stale (e.g. keys changed): ask for the password again
+      $("card").classList.remove("opening");
+      status("");
+      $("pw").focus();
+    });
+  }
+})();
+</script>
+</body>
+</html>
