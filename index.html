@@ -53,29 +53,46 @@
   .status { min-height: 1.5em; margin: 2px 0 0; font-size: 14px; text-align: center; color: var(--ink-soft); }
   .status.err { color: #9b2226; }
   .opening form, .opening .intro { display: none; }
+  /* EN | ES switch, top corner of the page */
+  .lang-switch {
+    position: fixed; top: 14px; right: 16px;
+    display: flex; padding: 2px; gap: 2px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 999px;
+  }
+  .lang-switch button {
+    padding: 4px 10px; border: 0; border-radius: 999px; cursor: pointer;
+    font: 500 12px/1.2 var(--body); letter-spacing: .08em;
+    color: var(--ink-soft); background: transparent;
+  }
+  .lang-switch button:hover { background: transparent; color: var(--primary); }
+  .lang-switch button[aria-pressed="true"] { background: var(--primary); color: var(--paper); }
 </style>
 </head>
 <body>
+<div class="lang-switch" role="group" aria-label="Language / Idioma">
+  <button type="button" data-lang="en" lang="en" title="English">EN</button>
+  <button type="button" data-lang="es" lang="es" title="Español">ES</button>
+</div>
 <main class="card" id="card">
-  <p class="eyebrow">You're invited</p>
-  <h1>Chile Trip Plans</h1>
+  <p class="eyebrow" data-t="eyebrow">You're invited</p>
+  <h1 data-t="title">Chile Trip Plans</h1>
   <div class="flourish" aria-hidden="true">❦</div>
-  <p class="intro">Enter the password we shared with you.</p>
+  <p class="intro" data-t="intro">Enter the password we shared with you.</p>
   <form id="form" autocomplete="on">
-    <label class="sr" for="pw">Password</label>
+    <label class="sr" for="pw" data-t="placeholder">Password</label>
     <input id="pw" type="password" name="password" autocomplete="current-password" placeholder="Password" required autofocus>
-    <label class="remember"><input id="remember" type="checkbox" checked> Remember me on this device for 30 days</label>
-    <button id="go" type="submit">Open</button>
+    <label class="remember"><input id="remember" type="checkbox" checked> <span data-t="remember">Remember me on this device for 30 days</span></label>
+    <button id="go" type="submit" data-t="open">Open</button>
   </form>
   <p class="status" id="status" role="status" aria-live="polite"></p>
-  <noscript><p class="status err">Please turn on JavaScript to open this page.</p></noscript>
+  <noscript><p class="status err">Please turn on JavaScript to open this page. / Activa JavaScript para abrir esta página.</p></noscript>
 </main>
 
 <script>
 (function () {
   "use strict";
   // Written by build.mjs: { salt, iterations, slots: [{ iv, data }], storageKey, rememberDays }
-  const LOCK = {"salt":"MK2YWAX8RIvwAv/TJ965tQ==","iterations":600000,"slots":[{"iv":"aLRmdqLg83Z6OJgY","data":"13wvNgy8FDJ7T3K/aYetwVu69LZFoulnWcpP+O4YVdMX0uNWiSZRDd3HX/OUqYMixrR37jEIvRVvFMF2s5fd3xxoPyD56owI25W8SxunGuQOr4kx3x4+9CXPC9HEtIzsBgC8EFEeyBM="},{"iv":"9g6lw84EvwyHGupx","data":"WU3SVWly4TlYsowVqYedZYNaS+C+A8m1jghRCgr5sODWIVwINcdEL68/mEF70qMpTujwq3eOV5/LTbKVjAgo/C4RuaVmOTNCdb2WCjHCPMYz9enLi2s1S9a8IrhBz+B1/J+l0pDDu2Y="},{"iv":"ch/MEGSlAwZglbmy","data":"D5aMiMouPtM9slSQcGc2Eg+Sye7BLPvfXZlGM+80KIjQaBUL6nWv9bsrahA64Fe6doXE2jcMRk+pPG7bgFLcKMndx1XtvyAK76WjsnsGA3/pEjJknsVuQBYPP90p7DyJh2wbxJ5g1zg="},{"iv":"jZ56RwdBg+HgCT//","data":"yUzzz1wNtuapfJZNPjYXeDPiQV6HNZzMLTNJDtgR1PYdF+vDN03Q2hQPSvMxbNRiA9Zi1rZjZHuJ+JSjCWsDwpy8UyqpGH4GpZutTJ9E7UM5TKPXE7G1JSd6sr9wz0yuOU6ZMfHBc08="},{"iv":"mUzwBieY36nt4GwB","data":"POJRrLjquFSTOqkFiFfWXaJvKFIPqqxCcp8FXTzfUaTQyFddhGnxIeA4yhOSmrdj71s2iNdp2Pnda2eNR/4WsCRZxbY4yXtdjNWus6cFJoz43q1//NZBafiKlvAGiyQDOepg6QEdl/c="}],"storageKey":"chile-trip-plans:unlock","rememberDays":30};
+  const LOCK = {"salt":"MK2YWAX8RIvwAv/TJ965tQ==","iterations":600000,"slots":[{"iv":"sfclHOvq5Y5jte6B","data":"XI7d4mDGrM9J8/8jQyOr8qyCuzvAlbyO680tqxwkxSylvt+2hvw0k1rLHAf5LU1MFX992YVQM8hpLMhkaNs3wx5ymxUN7zYst5smSb7EgnuykQ/ZxKbyk++zDswlnLqqKf2OmweN05g="},{"iv":"vzuz/W6KSZFIsWOZ","data":"H6qI25UG7OD/mhV6CdDbxHH0Hy6PkM/4XyTmLE5lHZXC14B90+SrmqIugFh5US49oA7b8X3yAwRRRNERqTfLpkckJTinpZzn7XDIxlrTMMAv/6edvFygLkUULcNFXbUoEvbkGCgbg84="},{"iv":"z5I3Y+CGDr01pW8V","data":"1und761y4maA7VIrR3+f8ulhwigqnEy04RTC7w/m2oU04rgZjMwkC4PVe8gwP0lsAe4RVmN2kwQ+x+Y7XawRfz0eCUQy1+Bu1zPMxU4hjfrQyzyQybZ8oquMdRrf/1qme/pYQ3vHIQY="},{"iv":"mKVDgwEmPNRy9Rb+","data":"4HfeuGk+kzDwoYDj9BxhZcpLk4BdF6P3WjUe22pe/IAyoVG82O1ko1+nsX+Isfo+Dw+ZSe9us/1pKOZ0EfCKrmExyOQxSr4AmcjjRqjE8vTAMWUY82VR7fGG4xrVsh5prYCBCHWpgkc="},{"iv":"YPiWlvc8Vnyyyn/J","data":"rHh6fEC+CQHjqas/6DcXECrLtWRzFOaOdpsu4xV7AyGO0oSUxZGNPuNdhHxYoEx2paUfThKzvHft/UZ9ZPP4hnAD1MfZMpBLo9s1WEfwrHUpXaLDTXpg7cZqs1oWDZaL/MRPB5NKgNE="}],"storageKey":"chile-trip-plans:unlock","rememberDays":30};
 
   const $ = id => document.getElementById(id);
   const utf8 = s => new TextEncoder().encode(s);
@@ -84,8 +101,54 @@
   // Must match norm() in build.mjs: ignore capitals and surrounding spaces
   const norm = p => p.normalize("NFC").trim().toLowerCase();
 
-  function status(msg, isError) {
-    $("status").textContent = msg;
+  // ── English / Spanish (the choice carries over to the plans page) ──
+  const LANG_KEY = "chile-trip-plans:lang";
+  const STRINGS = {
+    en: {
+      eyebrow: "You're invited", title: "Chile Trip Plans", intro: "Enter the password we shared with you.",
+      placeholder: "Password", remember: "Remember me on this device for 30 days", open: "Open",
+      needPassword: "Please type the password.", unlocking: "Unlocking…",
+      wrong: "That password didn't work. Please check it and try again.",
+      opening: "Opening…", openingPlans: "Opening your plans…",
+      failed: "Something went wrong opening the page. Please check your connection and try again.",
+      oldBrowser: "This browser can't open the page. Please try an up-to-date browser.",
+    },
+    es: {
+      eyebrow: "Te invitamos", title: "Planes en Chile", intro: "Ingresa la contraseña que te compartimos.",
+      placeholder: "Contraseña", remember: "Recordarme en este dispositivo por 30 días", open: "Abrir",
+      needPassword: "Por favor escribe la contraseña.", unlocking: "Desbloqueando…",
+      wrong: "Esa contraseña no funcionó. Revísala e inténtalo de nuevo.",
+      opening: "Abriendo…", openingPlans: "Abriendo tus planes…",
+      failed: "Algo salió mal al abrir la página. Revisa tu conexión e inténtalo de nuevo.",
+      oldBrowser: "Este navegador no puede abrir la página. Prueba con un navegador actualizado.",
+    },
+  };
+  let lang = (() => {
+    let saved = null;
+    try { saved = localStorage.getItem(LANG_KEY); } catch { /* ignore */ }
+    if (saved === "en" || saved === "es") return saved;
+    return (navigator.language || "").toLowerCase().startsWith("es") ? "es" : "en";
+  })();
+  const t = key => STRINGS[lang][key];
+  let lastStatus = null;   // [key, isError] so a language switch can re-translate it
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.title = t("title");
+    document.querySelectorAll("[data-t]").forEach(el => { el.textContent = t(el.dataset.t); });
+    $("pw").placeholder = t("placeholder");
+    document.querySelectorAll(".lang-switch button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    if (lastStatus) status(...lastStatus);
+  }
+  document.querySelectorAll(".lang-switch button").forEach(b => b.addEventListener("click", () => {
+    lang = b.dataset.lang;
+    try { localStorage.setItem(LANG_KEY, lang); } catch { /* ignore */ }
+    applyLang();
+  }));
+
+  // status(key, isError): shows a translated message; status(null) clears it
+  function status(key, isError) {
+    lastStatus = key ? [key, isError] : null;
+    $("status").textContent = key ? t(key) : "";
     $("status").className = "status" + (isError ? " err" : "");
   }
 
@@ -149,31 +212,33 @@
   $("form").addEventListener("submit", async e => {
     e.preventDefault();
     const pw = $("pw").value;
-    if (!norm(pw)) { status("Please type the password.", true); return; }
+    if (!norm(pw)) { status("needPassword", true); return; }
     $("go").disabled = true;
-    status("Unlocking…");
+    status("unlocking");
     await nextFrame();   // let "Unlocking…" appear before the slow step
     try {
       const access = await unlock(pw);
       if (!access) {
-        status("That password didn't work. Please check it and try again.", true);
+        status("wrong", true);
         $("pw").select();
         return;
       }
       saved.set(access, $("remember").checked);
-      status("Opening…");
+      status("opening");
       await openView(access);
     } catch (err) {
       console.error(err);
-      status("Something went wrong opening the page. Please check your connection and try again.", true);
+      status("failed", true);
     } finally {
       if (document.getElementById("go")) $("go").disabled = false;
     }
   });
 
+  applyLang();
+
   if (!window.crypto || !crypto.subtle) {
     $("go").disabled = true;
-    status("This browser can't open the page. Please try an up-to-date browser.", true);
+    status("oldBrowser", true);
     return;
   }
 
@@ -181,12 +246,12 @@
   const access = saved.get();
   if (access) {
     $("card").classList.add("opening");
-    status("Opening your plans…");
+    status("openingPlans");
     openView(access).catch(err => {
       console.error(err);
       saved.clear();          // stale (e.g. keys changed): ask for the password again
       $("card").classList.remove("opening");
-      status("");
+      status(null);
       $("pw").focus();
     });
   }
